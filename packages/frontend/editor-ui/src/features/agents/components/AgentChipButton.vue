@@ -8,11 +8,13 @@ const props = withDefaults(
 		disabled?: boolean;
 		variant?: 'default' | 'suggestion';
 		active?: boolean;
+		clickable?: boolean;
 	}>(),
 	{
 		disabled: false,
 		variant: 'default',
 		active: false,
+		clickable: true,
 	},
 );
 
@@ -32,7 +34,7 @@ const emit = defineEmits<{
 		:class="[
 			$style.chip,
 			props.variant === 'suggestion' ? $style.suggestion : $style.default,
-			{ [$style.active]: props.active },
+			{ [$style.active]: props.active, [$style.nonClickable]: !props.clickable },
 		]"
 		:disabled="props.disabled"
 		@click="emit('click', $event)"
@@ -75,6 +77,10 @@ const emit = defineEmits<{
 .chip:disabled {
 	cursor: not-allowed;
 	opacity: 0.6;
+}
+
+.nonClickable {
+	pointer-events: none;
 }
 
 .suggestion {
