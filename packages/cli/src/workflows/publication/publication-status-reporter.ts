@@ -13,7 +13,6 @@ import { Push } from '@/push';
 import type {
 	FailedTriggerPublicationStatus,
 	PublicationResult,
-	PublicationSkipReason,
 	TriggerPublicationStatus,
 } from '@/workflows/publication/publication-result';
 
@@ -57,7 +56,7 @@ export class PublicationStatusReporter {
 			}
 
 			case 'skipped': {
-				this.logSkip(record, result.reason);
+				this.logSkip(record);
 				await this.complete(record);
 				return;
 			}
@@ -198,14 +197,9 @@ export class PublicationStatusReporter {
 		await this.activationErrorsService.deregister(record.workflowId);
 	}
 
-	private logSkip(record: WorkflowPublicationOutbox, reason: PublicationSkipReason): void {
+	private logSkip(record: WorkflowPublicationOutbox): void {
 		const context = { workflowId: record.workflowId, outboxId: record.id };
 
-		if (reason === 'workflow-not-found') {
-			this.logger.warn('Workflow not found, marking outbox record as completed', context);
-			return;
-		}
-
-		this.logger.debug('Workflow is no longer active, marking outbox record as completed', context);
+		this.logger.warn('Workflow not found, marking outbox record as completed', context);
 	}
 }
