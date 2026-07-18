@@ -4,6 +4,7 @@ import type {
 	IUserManagementSettings,
 	FrontendSettings,
 	FrontendModuleSettings,
+	WorkflowReviewsPolicy,
 } from '@n8n/api-types';
 
 import * as eventsApi from '@n8n/rest-api-client/api/events';
@@ -285,6 +286,10 @@ export const useSettingsStore = defineStore(STORES.SETTINGS, () => {
 		settings.value.allowedModules = allowedModules;
 	};
 
+	const setWorkflowReviewsPolicy = (policy: WorkflowReviewsPolicy) => {
+		settings.value.workflowReviews = policy;
+	};
+
 	const setSaveDataErrorExecution = (newValue: WorkflowSettings.SaveDataExecution) => {
 		saveDataErrorExecution.value = newValue;
 	};
@@ -480,6 +485,7 @@ export const useSettingsStore = defineStore(STORES.SETTINGS, () => {
 		stopShowingSetupPage,
 		getSettings,
 		setSettings,
+		setWorkflowReviewsPolicy,
 		initialize,
 		getModuleSettings,
 		moduleSettings,
